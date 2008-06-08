@@ -1,10 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from datetime import datetime
+
 class Customer(models.Model):
     name = models.CharField(max_length=50, unique=True)
-    email = models.EmailField()
-    phone = models.CharField(max_length=25)
+    email = models.EmailField(blank=True)
+    phone = models.CharField(max_length=25, blank=True)
     def __str__(self):
         return self.name
     class Admin:
@@ -12,7 +14,7 @@ class Customer(models.Model):
     
 class Project(models.Model):
     name = models.CharField(max_length=25, unique=True)
-    customer = models.ForeignKey(Customer)
+    customer = models.ForeignKey(Customer, related_name='projects')
     def __str__(self):
         return self.name
     class Admin:
@@ -72,7 +74,8 @@ class Milestone(models.Model):
 class LogEntry(models.Model):
     task = models.ForeignKey(Task, related_name='log-entries')
     staff = models.ForeignKey(User, related_name='log-entries')
-    delta_time = models.PositiveIntegerField() # number of seconds being logged
+    logged_at = models.DateTimeField(default=datetime.now())
+    delta_time = models.PositiveIntegerField() # number of minutes being logged
     note = models.ForeignKey(Note, blank=True, null=True)
     def __str__(self):
         return "%s, %s: %s" % (self.task, self.staff, self.delta_time)

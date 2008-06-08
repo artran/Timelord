@@ -3,5 +3,7 @@ from main.models import *
 
 urlpatterns = patterns('main.views',
     (r'^$', 'index'),
-    (r'^project/(?P<id>[0-9]+)/$', 'project')
+    (r'^project/(?P<id>[0-9]+)/$', 'project'),
+    (r'^status/$', 'status'),
+    (r'^log/$', 'log')
 )

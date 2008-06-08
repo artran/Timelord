@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block script %}
+  <script type="text/javascript" charset="utf-8" src="/media/js/jquery.js"></script>
+  <script type="text/javascript" charset="utf-8" src="/media/js/jquery.timers.js"></script>
+  <script type="text/javascript" charset="utf-8" src="/media/js/log.js"></script>
+{% endblock %}
+
+{% block content %}
+  <h1>Timelord</h1>
+  
+  <ul>
+    <li>Time for today: {{ today_time }}</li>
+    {% if current_task %}
+      <li>Time for {{ current_task }}: {{ task_time }}</li>
+    {% else %}
+      <li>No task selected</li>
+    {% endif %}
+    
+    <li>
+      Milestones:
+      <ul>
+        {{ milestones|unordered_list }}
+      </ul>
+    </li>
+  </ul>
+  
+  <form action="/timelord/status/" method="post" accept-charset="utf-8">
+    <select name="task">
+      {% for task in tasks %}
+        <option value="{{ task.pk }}" {% ifequal task current_task %} selected="selected"{% endifequal %}>
+          {{ task }}
+        </option>
+      {% endfor %}
+    </select>
+    
+    <input type="submit" name="Submit" id="Submit" />
+    <br/>
+    <input type="checkbox" name="paused" value="1" id="paused"/>Paused
+  </form>
+    
+{% endblock %}
