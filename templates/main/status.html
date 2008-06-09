@@ -25,8 +25,8 @@
     </li>
   </ul>
   
-  <form action="/timelord/status/" method="post" accept-charset="utf-8">
-    <select name="task">
+  <form action="{% url main.views.status %}" method="post" accept-charset="utf-8">
+    <select name="task" id="task">
       {% for task in tasks %}
         <option value="{{ task.pk }}" {% ifequal task current_task %} selected="selected"{% endifequal %}>
           {{ task }}

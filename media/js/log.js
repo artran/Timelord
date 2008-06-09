@@ -1,16 +1,22 @@
 /* Script to log times to Timelord */
 /* Timer documentation - http://jquery.offput.ca/every/ */
 
+var times = new Array();
+
 $(document).ready(function(){
-    $(this).everyTime("5s", "log_timer", log);
-    $("#paused").change(changePaused);
+    $(document).everyTime("30s", "log_timer", log);
+    $("#paused").click(clickPaused);
 })
 
 function log() {
-    alert("summat to log");
+    var idx = $("#task").selectedIndex;
+    alert(idx);
 }
 
-function changePaused() {
-    alert("change")
-    $(this).stopTime("log_timer");
+function clickPaused() {
+    if (this.checked) {
+        $(document).stopTime("log_timer");
+    } else {
+        $(document).everyTime("30s", "log_timer", log);
+    }
 }

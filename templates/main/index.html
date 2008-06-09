@@ -9,4 +9,5 @@
             <li><a href="{% url main.views.project project.id %}">{{ project }}</a></li>
         {% endfor %}
     </ul>
+    <a href="{% url main.views.status %}">Status</a>
 {% endblock %}
