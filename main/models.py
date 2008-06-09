@@ -15,6 +15,7 @@ class Customer(models.Model):
 class Project(models.Model):
     name = models.CharField(max_length=25, unique=True)
     customer = models.ForeignKey(Customer, related_name='projects')
+    # needs a 'live' field
     def __str__(self):
         return self.name
     class Admin:
@@ -25,6 +26,7 @@ class Task(models.Model):
     project = models.ForeignKey(Project, related_name='tasks')
     managers = models.ManyToManyField(User, related_name='managed_tasks')
     staff = models.ManyToManyField(User, related_name='tasks')
+    # needs a 'live' field or possibly inferred from project
     def __str__(self):
         return "%s: %s" % (self.project, self.name)
     class Meta:
