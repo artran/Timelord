@@ -1,41 +1,41 @@
 /* Script to log times to Timelord */
 /* Timer documentation - http://jquery.offput.ca/every/ */
 
-var INTERVAL = 10;//<--------------------- Change to 60
-var INTERVAL_STR = "" + INTERVAL + "s";
+var INTERVAL = 1;//minutes
+var INTERVAL_STR = "" + INTERVAL*60 + "s";
+var LOG_RATE = 5;//log after this many intervals
 
-var times = [];
+var dataMap = {};
 var totalTime = 0;
 
 $(document).ready(function(){
     $(document).everyTime(INTERVAL_STR, "log_timer", log);
     $("#paused").click(clickPaused);
+    $("#task-select").change(taskChanged);
 })
 
 function log() {
-    var idx = $("#task").val();
+    var idx = $("#task-select").val();
     
-    var time = times[idx];
+    var time = dataMap[idx];
     if (time == undefined) {
-        times[idx] = INTERVAL;
+        dataMap[idx] = INTERVAL;
     } else {
-        times[idx] += INTERVAL;
+        dataMap[idx] += INTERVAL;
     }
     
     totalTime += INTERVAL;
     // Log every five minutes
-    if (totalTime >= 30) {//<------------ Change to 300
-        var dataMap = {};
+    if (totalTime >= LOG_RATE) {
         dataMap["task"] = idx
-        for (idx in times) {
-            dataMap["time" + idx] = times[idx];
-        }
+
         $.post("/timelord/log/", dataMap, function(data){
-            console.log(data)}
-        );
+            $('#task-time').html($('current-task', data).text());
+            $('#today-time').html($('today-time', data).text());
+        });
         
         totalTime = 0;
-        times = [];
+        dataMap = {};
     }
 }
 
@@ -45,4 +45,11 @@ function clickPaused() {
     } else {
         $(document).everyTime(INTERVAL_STR, "log_timer", log);
     }
+}
+
+function taskChanged() {
+    $.post("/timelord/task-status/", {'task': $("#task-select").val()}, function(data){
+        $('#task-time').html($('current-task', data).text());
+        $('#today-time').html($('today-time', data).text());
+    });
 }
