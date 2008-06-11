@@ -50,4 +50,6 @@ def status(request):
                                                    'today_time': today_time,'task_time': task_time})
 
 def log(request):
+    print request.POST
+    
     return status(request)

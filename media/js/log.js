@@ -25,7 +25,15 @@ function log() {
     totalTime += INTERVAL;
     // Log every five minutes
     if (totalTime >= 30) {//<------------ Change to 300
-        alert("log");
+        var dataMap = {};
+        dataMap["task"] = idx
+        for (idx in times) {
+            dataMap["time" + idx] = times[idx];
+        }
+        $.post("/timelord/log/", dataMap, function(data){
+            console.log(data)}
+        );
+        
         totalTime = 0;
         times = [];
     }
