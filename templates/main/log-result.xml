@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<log-result>
+    <current-task task={{ current_task }}>{{ task_time }}</current-task>
+    <today-time>{{ today_time }}</today-time>
+</log-result>

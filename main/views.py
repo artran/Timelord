@@ -50,6 +50,91 @@ def status(request):
                                                    'today_time': today_time,'task_time': task_time})
 
 def log(request):
-    print request.POST
+    if request.method != 'POST':
+        return status(request)
     
-    return status(request)
+    print request.POST
+    user = request.user
+    for item in request.POST.items():
+        key = item[0]
+        val = item[1]
+        
+        if key != 'task':
+            try:
+                task = Task.objects.get(pk=key)
+                log = LogEntry()
+                log.staff = user
+                log.task = task
+                log.delta_time = val
+                log.save()
+            except:
+                pass
+            
+    current_task = None
+    task_time = '0:00'
+    today_time = '0:00'
+    today = date.today()
+    try:
+        current_task = Task.objects.get(pk=request.POST['task'])
+        # Get time for the current task
+        log_entries = LogEntry.objects.filter(staff=user, task=current_task,
+                      logged_at__year=today.year, logged_at__month=today.month,
+                      logged_at__day=today.day)
+        task_mins = 0
+        for entry in log_entries:
+            task_mins += entry.delta_time
+        task_hours = task_mins // 60
+        task_mins = task_mins - (60 * task_hours)
+        task_time = "%i:%#02i" % (task_hours, task_mins)
+        
+        # Get the total time for today
+        log_entries = LogEntry.objects.filter(staff=user,
+                              logged_at__year=today.year, logged_at__month=today.month,
+                              logged_at__day=today.day)
+        today_mins = 0
+        for entry in log_entries:
+            today_mins += entry.delta_time
+        today_hours = today_mins // 60
+        today_mins = today_mins - (60 * today_hours)
+        today_time = "%i:%#02i" % (today_hours, today_mins)
+    except:
+        print 'exception'
+    
+    return render_to_response('main/log-result.xml', {'current_task': current_task, 'task_time': task_time,
+                                                       'today_time': today_time})
+
+# This function repeats a chunk of the log function
+def task_status(request):
+    user = request.user
+    current_task = None
+    task_time = '0:00'
+    today_time = '0:00'
+    today = date.today()
+    
+    current_task = Task.objects.get(pk=request.POST['task'])
+    # Get time for the current task
+    log_entries = LogEntry.objects.filter(staff=user, task=current_task,
+                  logged_at__year=today.year, logged_at__month=today.month,
+                  logged_at__day=today.day)
+    task_mins = 0
+    for entry in log_entries:
+        task_mins += entry.delta_time
+    task_hours = task_mins // 60
+    task_mins = task_mins - (60 * task_hours)
+    task_time = "%i:%#02i" % (task_hours, task_mins)
+    
+    # Get the total time for today
+    log_entries = LogEntry.objects.filter(staff=user,
+                          logged_at__year=today.year, logged_at__month=today.month,
+                          logged_at__day=today.day)
+    today_mins = 0
+    for entry in log_entries:
+        today_mins += entry.delta_time
+    today_hours = today_mins // 60
+    today_mins = today_mins - (60 * today_hours)
+    today_time = "%i:%#02i" % (today_hours, today_mins)
+    #except:
+    #    print 'exception'
+    
+    return render_to_response('main/log-result.xml', {'current_task': current_task, 'task_time': task_time,
+                                                       'today_time': today_time})

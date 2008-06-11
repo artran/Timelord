@@ -10,23 +10,16 @@
   <h1>Timelord</h1>
   
   <ul>
-    <li>Time for today: {{ today_time }}</li>
+    <li>Time for today: <span id="today-time">{{ today_time }}</span></li>
     {% if current_task %}
-      <li>Time for {{ current_task }}: {{ task_time }}</li>
+      <li>Time for current task: <span id="task-time">{{ task_time }}</span></li>
     {% else %}
       <li>No task selected</li>
     {% endif %}
-    
-    <li>
-      Milestones:
-      <ul>
-        {{ milestones|unordered_list }}
-      </ul>
-    </li>
   </ul>
   
   <form action="{% url main.views.status %}" method="post" accept-charset="utf-8">
-    <select name="task" id="task">
+    <select name="task" id="task-select">
       {% for task in tasks %}
         <option value="{{ task.pk }}" {% ifequal task current_task %} selected="selected"{% endifequal %}>
           {{ task }}
