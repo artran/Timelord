@@ -1,15 +1,21 @@
 from django.conf.urls.defaults import *
 import sys
 
+# The main site
 urlpatterns = patterns('',
-    # The main site
     (r'^$', 'django.views.generic.simple.redirect_to', {'url': '/timelord/'}),
     (r'^timelord/', include('main.urls')),
 )
 
+# The admin site
 urlpatterns += patterns('',
     # Admin:
     (r'^admin/', include('django.contrib.admin.urls')),
+)
+
+# Authentication
+urlpatterns += patterns('',
+	(r'^accounts/login/$', 'django.contrib.auth.views.login'),
 )
 
 # Static content

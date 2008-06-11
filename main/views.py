@@ -72,7 +72,7 @@ def log(request):
             except:
                 pass
     
-    return task_status(request)        
+    return task_status(request)
 
 @login_required
 def task_status(request):

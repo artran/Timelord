@@ -11,11 +11,16 @@
   
   <ul>
     <li>Time for today: <span id="today-time">{{ today_time }}</span></li>
-    {% if current_task %}
-      <li>Time for current task: <span id="task-time">{{ task_time }}</span></li>
-    {% else %}
-      <li>No task selected</li>
-    {% endif %}
+    <li>
+      Time for current task:
+      <span id="task-time">
+        {% if current_task %}
+          {{ task_time }}
+        {% else %}
+          unknown
+        {% endif %}
+      </span>
+    </li>
   </ul>
   
   <form action="{% url main.views.status %}" method="post" accept-charset="utf-8">

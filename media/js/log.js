@@ -12,8 +12,11 @@ $(document).ready(function(){
     $(document).everyTime(INTERVAL_STR, "log_timer", log);
     $("#paused").click(clickPaused);
     $("#task-select").change(taskChanged);
+    // Now update the task time value
+    taskChanged();
 })
 
+// Keep track of the times on each task. Periodocally update the main server
 function log() {
     var idx = $("#task-select").val();
     
@@ -39,6 +42,7 @@ function log() {
     }
 }
 
+// Stop recording time
 function clickPaused() {
     if (this.checked) {
         $(document).stopTime("log_timer");
@@ -47,6 +51,7 @@ function clickPaused() {
     }
 }
 
+// When the selected task changes update the task time value on screen
 function taskChanged() {
     $.post("/timelord/task-status/", {'task': $("#task-select").val()}, function(data){
         $('#task-time').html($('current-task', data).text());
