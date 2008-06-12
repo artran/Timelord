@@ -76,7 +76,7 @@ class Milestone(models.Model):
 class LogEntry(models.Model):
     task = models.ForeignKey(Task, related_name='log-entries')
     staff = models.ForeignKey(User, related_name='log-entries')
-    logged_at = models.DateTimeField(default=datetime.now())
+    logged_at = models.DateTimeField(default=datetime.now)
     delta_time = models.PositiveIntegerField() # number of minutes being logged
     note = models.ForeignKey(Note, blank=True, null=True)
     def __str__(self):
