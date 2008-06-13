@@ -7,4 +7,5 @@ urlpatterns = patterns('main.views',
     (r'^status/$', 'status'),
     (r'^log/$', 'log'),
     (r'^task-status/$', 'task_status'),
+    (r'^adjust-time/$', 'adjust_time'),
 )

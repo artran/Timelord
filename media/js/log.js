@@ -12,6 +12,16 @@ $(document).ready(function(){
     $(document).everyTime(INTERVAL_STR, "log_timer", log);
     $("#paused").click(clickPaused);
     $("#task-select").change(taskChanged);
+    $("#plus5").click(function(){
+        $.post("/timelord/adjust-time/", {'task': $("#task-select").val(), 'adjust': 5}, function(data){
+            updateDisplay(data);
+        });
+    });
+    $("#minus5").click(function(){
+        $.post("/timelord/adjust-time/", {'task': $("#task-select").val(), 'adjust': -5}, function(data){
+            updateDisplay(data);
+        });
+    });
     // Now update the task time value
     taskChanged();
 })
@@ -33,8 +43,7 @@ function log() {
         dataMap["task"] = idx
 
         $.post("/timelord/log/", dataMap, function(data){
-            $('#task-time').html($('current-task', data).text());
-            $('#today-time').html($('today-time', data).text());
+            updateDisplay(data);
         });
         
         totalTime = 0;
@@ -54,7 +63,11 @@ function clickPaused() {
 // When the selected task changes update the task time value on screen
 function taskChanged() {
     $.post("/timelord/task-status/", {'task': $("#task-select").val()}, function(data){
-        $('#task-time').html($('current-task', data).text());
-        $('#today-time').html($('today-time', data).text());
+        updateDisplay(data);
     });
+}
+
+function updateDisplay(data) {
+    $('#task-time').html($('current-task', data).text());
+    $('#today-time').html($('today-time', data).text());
 }

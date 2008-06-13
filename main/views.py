@@ -104,8 +104,18 @@ def task_status(request):
     today_hours = today_mins // 60
     today_mins = today_mins - (60 * today_hours)
     today_time = "%i:%#02i" % (today_hours, today_mins)
-    #except:
-    #    print 'exception'
-    
     return render_to_response('main/log-result.xml', {'current_task': current_task, 'task_time': task_time,
                                                        'today_time': today_time})
+
+@login_required
+def adjust_time(request):
+    if request.method != 'POST':
+        return status(request)
+    user = request.user
+    current_task = Task.objects.get(pk=request.POST['task'])
+    log = LogEntry()
+    log.staff = user
+    log.task = current_task
+    log.delta_time = request.POST['adjust']
+    log.save()
+    return task_status(request)
