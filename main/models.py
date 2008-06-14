@@ -77,7 +77,7 @@ class LogEntry(models.Model):
     task = models.ForeignKey(Task, related_name='log-entries')
     staff = models.ForeignKey(User, related_name='log-entries')
     logged_at = models.DateTimeField(default=datetime.now)
-    delta_time = models.PositiveIntegerField() # number of minutes being logged
+    delta_time = models.PositiveIntegerField(help_text="Number of minutes being logged")
     note = models.ForeignKey(Note, blank=True, null=True)
     def __str__(self):
         return "%s, %s: %s" % (self.task, self.staff, self.delta_time)
