@@ -16,8 +16,9 @@ def project(request, id):
 
 @login_required
 def status(request):
+    'Return the current task, all tasks for this user, all milestones for this task and times for task and day.'
+    
     user = request.user
-    project = None
     task = None
     milestones = []
     task_time = "0:00"
@@ -47,12 +48,13 @@ def status(request):
     today_time = "%i:%#02i" % (today_hours, today_mins)
     
     tasks = user.tasks.all()
-    return render_to_response('main/status.html', {'project': project, 'current_task': task,
-                                                   'tasks': tasks, 'milestones': milestones,
+    return render_to_response('main/status.html', {'current_task': task, 'tasks': tasks, 'milestones': milestones,
                                                    'today_time': today_time,'task_time': task_time})
 
 @login_required
 def log(request):
+    'Add log entries for an arbitary number of tasks. The task_id is a key into a map and the delta is the value.'
+    
     if request.method != 'POST':
         return status(request)
     
@@ -75,40 +77,9 @@ def log(request):
     return task_status(request)
 
 @login_required
-def task_status(request):
-    user = request.user
-    current_task = None
-    task_time = '0:00'
-    today_time = '0:00'
-    today = date.today()
-    
-    current_task = Task.objects.get(pk=request.POST['task'])
-    # Get time for the current task
-    log_entries = LogEntry.objects.filter(staff=user, task=current_task,
-                  logged_at__year=today.year, logged_at__month=today.month,
-                  logged_at__day=today.day)
-    task_mins = 0
-    for entry in log_entries:
-        task_mins += entry.delta_time
-    task_hours = task_mins // 60
-    task_mins = task_mins - (60 * task_hours)
-    task_time = "%i:%#02i" % (task_hours, task_mins)
-    
-    # Get the total time for today
-    log_entries = LogEntry.objects.filter(staff=user,
-                          logged_at__year=today.year, logged_at__month=today.month,
-                          logged_at__day=today.day)
-    today_mins = 0
-    for entry in log_entries:
-        today_mins += entry.delta_time
-    today_hours = today_mins // 60
-    today_mins = today_mins - (60 * today_hours)
-    today_time = "%i:%#02i" % (today_hours, today_mins)
-    return render_to_response('main/log-result.xml', {'current_task': current_task, 'task_time': task_time,
-                                                       'today_time': today_time})
-
-@login_required
 def adjust_time(request):
+    'Add a log entry for a single task. The POST parameters are the task_id and delta_time in minutes.'
+    
     if request.method != 'POST':
         return status(request)
     user = request.user

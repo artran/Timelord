@@ -18,6 +18,8 @@ class Project(models.Model):
     # needs a 'live' field
     def __str__(self):
         return self.name
+    class Meta:
+        ordering = ['name']
     class Admin:
         pass
     
@@ -31,6 +33,7 @@ class Task(models.Model):
         return "%s: %s" % (self.project, self.name)
     class Meta:
         unique_together = ('name', 'project')
+        ordering = ['name']
     class Admin:
         pass
     
@@ -77,7 +80,7 @@ class LogEntry(models.Model):
     task = models.ForeignKey(Task, related_name='log-entries')
     staff = models.ForeignKey(User, related_name='log-entries')
     logged_at = models.DateTimeField(default=datetime.now)
-    delta_time = models.PositiveIntegerField(help_text="Number of minutes being logged")
+    delta_time = models.IntegerField(help_text="Number of minutes being logged")
     note = models.ForeignKey(Note, blank=True, null=True)
     def __str__(self):
         return "%s, %s: %s" % (self.task, self.staff, self.delta_time)
