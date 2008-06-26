@@ -53,7 +53,10 @@ def task_list(request):
 
 @login_required
 def task_status(request):
-    'Return the time on a task and the total time for today when given a task_id as a POST parameter.'
+    '''
+    Return the time on a task and the total time for today when given a task_id as a POST parameter.
+    If the task_id isn't present or is not valid it will return 0:00 for the task-time'
+    '''
     
     user = request.user
     current_task = None
@@ -61,7 +64,13 @@ def task_status(request):
     today_time = '0:00'
     today = date.today()
     
-    current_task = Task.objects.get(pk=request.POST['task'])
+    try:
+        current_task = Task.objects.get(pk=request.POST['task'])
+    except KeyError:
+        pass
+    except Task.DoesNotExist:
+        pass
+        
     # Get time for the current task
     log_entries = LogEntry.objects.filter(staff=user, task=current_task,
                   logged_at__year=today.year, logged_at__month=today.month,

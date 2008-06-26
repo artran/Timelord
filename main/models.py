@@ -9,33 +9,41 @@ class Customer(models.Model):
     phone = models.CharField(max_length=25, blank=True)
     def __str__(self):
         return self.name
+    class Meta:
+        ordering = ['name']
     class Admin:
         pass
     
 class Project(models.Model):
-    name = models.CharField(max_length=25, unique=True)
-    customer = models.ForeignKey(Customer, related_name='projects')
-    # needs a 'live' field
+    name = models.CharField(max_length=25, unique=True, core=True)
+    customer = models.ForeignKey(Customer, related_name='projects', edit_inline=models.TABULAR)
+    live = models.BooleanField(default=True)
     def __str__(self):
         return self.name
     class Meta:
         ordering = ['name']
     class Admin:
-        pass
+        list_display = ('customer', 'name', 'live')
+        list_display_links = ('name',)
+        ordering = ('customer', 'name')
+        list_filter = ('customer', 'name')
     
 class Task(models.Model):
     name = models.CharField(max_length=25)
     project = models.ForeignKey(Project, related_name='tasks')
     managers = models.ManyToManyField(User, related_name='managed_tasks')
     staff = models.ManyToManyField(User, related_name='tasks')
-    # needs a 'live' field or possibly inferred from project
+    # TODO: 'live' inferred from project
     def __str__(self):
         return "%s: %s" % (self.project, self.name)
     class Meta:
         unique_together = ('name', 'project')
         ordering = ['name']
     class Admin:
-        pass
+        list_display = ('project', 'name')
+        list_display_links = ('name',)
+        ordering = ('project', 'name')
+        list_filter = ('project', 'name')
     
 class Note(models.Model):
     task = models.ForeignKey(Task, related_name='notes')
