@@ -6,6 +6,8 @@ from datetime import date
 
 from main.models import *
 
+import api_views
+
 def index(request):
     projects = Project.objects.all()
     return render_to_response('main/index.html', {'projects': projects})
@@ -74,7 +76,7 @@ def log(request):
             except:
                 pass
     
-    return task_status(request)
+    return api_views.task_status(request)
 
 @login_required
 def adjust_time(request):
@@ -89,4 +91,4 @@ def adjust_time(request):
     log.task = current_task
     log.delta_time = request.POST['adjust']
     log.save()
-    return task_status(request)
+    return api_views.task_status(request)
