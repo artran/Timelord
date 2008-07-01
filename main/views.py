@@ -49,7 +49,7 @@ def status(request):
     today_mins = today_mins - (60 * today_hours)
     today_time = "%i:%#02i" % (today_hours, today_mins)
     
-    tasks = user.tasks.all()
+    tasks = user.tasks.order_by('project__name', 'name')
     return render_to_response('main/status.html', {'current_task': task, 'tasks': tasks, 'milestones': milestones,
                                                    'today_time': today_time,'task_time': task_time})
 
