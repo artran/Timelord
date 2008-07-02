@@ -51,7 +51,7 @@ def status(request):
     
     tasks = user.tasks.order_by('project__name', 'name')
     return render_to_response('main/status.html', {'current_task': task, 'tasks': tasks, 'milestones': milestones,
-                                                   'today_time': today_time,'task_time': task_time})
+                                                   'today_time': today_time,'task_time': task_time, 'user': user})
 
 @login_required
 def log(request):
