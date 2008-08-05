@@ -63,8 +63,8 @@ class LogEntry(models.Model):
 class Note(models.Model):
     text = models.TextField(core=True)
     log_entry = models.ForeignKey(LogEntry, edit_inline=models.TABULAR, num_in_admin=1)
-    def __str__(self):
-        return "%s: %s" % (self.task, self.text)
+    def __unicode__(self):
+        return "%s: %s" % (self.log_entry.task, self.text)
     class Admin:
         pass
     
@@ -72,8 +72,8 @@ class Expense(models.Model):
     text = models.TextField()
     amount = models.DecimalField(max_digits=5, decimal_places=2, help_text="£", core=True)
     log_entry = models.ForeignKey(LogEntry, edit_inline=models.TABULAR, num_in_admin=1)
-    def __str__(self):
-        return "%s: %s" % (self.task, self.text)
+    def __unicode__(self):
+        return "%s: %s, £ %s" % (self.log_entry.task, self.text, self.amount)
     class Admin:
         pass
     
