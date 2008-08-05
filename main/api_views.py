@@ -94,3 +94,14 @@ def task_status(request):
     today_time = "%i:%#02i" % (today_hours, today_mins)
     return render_to_response('main/log-result.xml', {'current_task': current_task, 'task_time': task_time,
                                                        'today_time': today_time})
+
+@login_required
+def get_profile(request):
+    "Get the user's profile if it exists"
+    user = request.user
+    try:
+        profile = user.get_profile()
+    except UserProfile.DoesNotExist:
+        profile = None
+    
+    return render_to_response('main/profile.xml', {'profile': profile})

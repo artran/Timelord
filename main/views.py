@@ -26,8 +26,16 @@ def status(request):
     task_time = "0:00"
     today = date.today()
     
-    if request.method == 'POST':
-        task = get_object_or_404(Task, pk=request.POST['task'])
+    try:
+        task = Task.objects.get(pk=request.REQUEST['task'])
+    except:
+        try:
+            profile = user.get_profile()
+            task = profile.preferred_task
+        except UserProfile.DoesNotExist:
+            task = None
+    
+    if task and task in user.tasks.all():
         milestones = task.milestones.all()
         log_entries = LogEntry.objects.filter(staff=user, task=task,
                       logged_at__year=today.year, logged_at__month=today.month,

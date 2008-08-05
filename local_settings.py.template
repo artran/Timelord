@@ -30,3 +30,5 @@ LANGUAGE_CODE = 'en-gb'
 SECRET_KEY = '50 characters or so'
 
 INTERNAL_IPS = ('127.0.0.1', '192.168.0.74',)
+
+AUTH_PROFILE_MODULE = 'main.userprofile'

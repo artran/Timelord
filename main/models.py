@@ -96,3 +96,11 @@ class Milestone(models.Model):
         unique_together = ('name', 'task')
     class Admin:
         pass
+
+class UserProfile(models.Model):
+    user = models.ForeignKey(User, unique=True)
+    preferred_task = models.ForeignKey(Task, help_text='Task selected by default in widgets')
+    class Admin:
+        pass
+    def __unicode__(self):
+        return unicode(self.user)
