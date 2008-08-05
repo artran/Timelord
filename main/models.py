@@ -73,7 +73,7 @@ class Expense(models.Model):
     amount = models.DecimalField(max_digits=5, decimal_places=2, help_text="£", core=True)
     log_entry = models.ForeignKey(LogEntry, edit_inline=models.TABULAR, num_in_admin=1)
     def __unicode__(self):
-        return "%s: %s, £ %s" % (self.log_entry.task, self.text, self.amount)
+        return "%s: %s, GBP %s" % (self.log_entry.task, self.text, self.amount)
     class Admin:
         pass
     
