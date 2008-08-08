@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {{ project }}
+    
+    <ul>
+        {% for task in project.tasks.all %}
+            <li>{{ task.name }}</li>
+            {% if task.milestones.all %}
+                <ul>
+                    {{ task.milestones.all|unordered_list}}
+                </ul>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endblock %}

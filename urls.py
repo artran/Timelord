@@ -7,6 +7,10 @@ urlpatterns = patterns('',
     (r'^timelord/', include('main.urls')),
 )
 
+urlpatterns += patterns('',
+    (r'^reports/', include('reports.urls')),
+)
+
 # The admin site
 urlpatterns += patterns('',
     # Admin:

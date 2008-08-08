@@ -5,6 +5,11 @@ from django.contrib.auth.models import User
 
 from datetime import datetime
 
+class LiveProjectManager(models.Manager):
+    """Return only projects that are live"""
+    def get_query_set(self):
+        return super(LiveProjectManager, self).get_query_set().filter(live=True)
+
 class Customer(models.Model):
     name = models.CharField(max_length=50, unique=True)
     email = models.EmailField(blank=True)
@@ -20,6 +25,12 @@ class Project(models.Model):
     name = models.CharField(max_length=25, unique=True, core=True)
     customer = models.ForeignKey(Customer, related_name='projects', edit_inline=models.TABULAR)
     live = models.BooleanField(default=True)
+    info = models.TextField(blank=True)
+    url = models.URLField(blank=True, verify_exists=False)
+    
+    # Managers
+    objects = models.Manager() # If this isn't first then non-live projects can't edited in the admin interface
+    live_objects = LiveProjectManager()
     def __str__(self):
         return self.name
     class Meta:
@@ -29,6 +40,9 @@ class Project(models.Model):
         list_display_links = ('name',)
         ordering = ('customer', 'name')
         list_filter = ('customer', 'name')
+    @models.permalink
+    def get_absolute_url(self):
+        return ('timelord_project_detail', (), {'id': self.pk})
     
 class Task(models.Model):
     name = models.CharField(max_length=25)

@@ -31,4 +31,22 @@ SECRET_KEY = '50 characters or so'
 
 INTERNAL_IPS = ('127.0.0.1', '192.168.0.74',)
 
+MIDDLEWARE_CLASSES = (
+    'django.middleware.gzip.GZipMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.doc.XViewMiddleware',
+    #'utils.middleware.sql_log.SQLLogMiddleware',
+)
+
+INSTALLED_APPS = (
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.admin',
+    'main',
+)
+
 AUTH_PROFILE_MODULE = 'main.userprofile'
