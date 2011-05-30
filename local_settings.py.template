@@ -51,4 +51,4 @@ INSTALLED_APPS = (
     'timelord.main',
 )
 
-AUTH_PROFILE_MODULE = 'timelord.main.userprofile'
+AUTH_PROFILE_MODULE = 'main.userprofile'
