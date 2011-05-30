@@ -4,10 +4,12 @@ from django.contrib.auth.models import User
 
 from datetime import datetime
 
+
 class LiveProjectManager(models.Manager):
     """Return only projects that are live"""
     def get_query_set(self):
         return super(LiveProjectManager, self).get_query_set().filter(live=True)
+
 
 class Customer(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -20,16 +22,16 @@ class Customer(models.Model):
     class Meta:
         ordering = ['name']
 
-    
+
 class Project(models.Model):
     name = models.CharField(max_length=25, unique=True,)
     customer = models.ForeignKey(Customer, related_name='projects')
     live = models.BooleanField(default=True)
     info = models.TextField(blank=True)
     url = models.URLField(blank=True, verify_exists=False)
-    
+
     # Managers
-    objects = models.Manager() # If this isn't first then non-live projects can't edited in the admin interface
+    objects = models.Manager()  # If this isn't first then non-live projects can't edited in the admin interface
     live_objects = LiveProjectManager()
 
     def __str__(self):
@@ -42,7 +44,7 @@ class Project(models.Model):
     def get_absolute_url(self):
         return ('timelord_project_detail', (), {'id': self.pk})
 
-    
+
 class Task(models.Model):
     name = models.CharField(max_length=25)
     project = models.ForeignKey(Project, related_name='tasks')
@@ -67,7 +69,7 @@ class LogEntry(models.Model):
     def __str__(self):
         return "%s, %s: %s" % (self.task, self.staff, self.delta_time)
 
-    
+
 class Note(models.Model):
     text = models.TextField()
     log_entry = models.ForeignKey(LogEntry)
@@ -75,7 +77,7 @@ class Note(models.Model):
     def __unicode__(self):
         return "%s: %s" % (self.log_entry.task, self.text)
 
-    
+
 class Expense(models.Model):
     text = models.TextField()
     amount = models.DecimalField(max_digits=5, decimal_places=2, help_text="£")
@@ -83,8 +85,8 @@ class Expense(models.Model):
 
     def __unicode__(self):
         return "%s: %s, GBP %s" % (self.log_entry.task, self.text, self.amount)
-    
-    
+
+
 class Milestone(models.Model):
     MILESTONE_TYPES = (
         ('deadline', 'Deadline'),
@@ -98,7 +100,7 @@ class Milestone(models.Model):
     occurs_at = models.DateTimeField()
     hit_at = models.DateTimeField(blank=True, null=True)
     email_overdue = models.BooleanField(default=False)
-    
+
     def __str__(self):
         return "%s: %s" % (self.task, self.name)
 
@@ -109,6 +111,6 @@ class Milestone(models.Model):
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
     preferred_task = models.ForeignKey(Task, help_text='Task selected by default in widgets')
-    
+
     def __unicode__(self):
         return unicode(self.user)

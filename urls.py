@@ -22,7 +22,7 @@ urlpatterns += patterns('',
 
 # Authentication
 urlpatterns += patterns('',
-	(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    (r'^accounts/login/$', 'django.contrib.auth.views.login'),
 )
 
 # Static content

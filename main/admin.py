@@ -34,7 +34,7 @@ class LogEntryAdmin(admin.ModelAdmin):
     pass
 admin.site.register(LogEntry, LogEntryAdmin)
 
-    
+
 class NoteAdmin(admin.ModelAdmin):
     pass
 admin.site.register(Note, NoteAdmin)

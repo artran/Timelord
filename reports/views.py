@@ -6,6 +6,7 @@ from datetime import date
 
 from timelord.main.models import *
 
+
 def index(request):
     projects = Project.objects.all()
     return render_to_response('reports/index.html', {'projects': projects})

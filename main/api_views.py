@@ -6,6 +6,7 @@ from datetime import date
 
 from models import *
 
+
 @login_required
 def project_list(request):
     '''
@@ -17,9 +18,9 @@ def project_list(request):
           where main_task_staff.user_id=:user
             and main_task.id=main_task_staff.task_id
       )
-    '''    
+    '''
     user = request.user
-    projects =  Project.objects.extra(where=['''
+    projects = Project.objects.extra(where=['''
         id in (
             select distinct project_id
             from main_task, main_task_staff
@@ -27,6 +28,7 @@ def project_list(request):
               and main_task.id=main_task_staff.task_id)
     '''], params=[user.id])
     return render_to_response('main/project-list.xml', {'projects': projects})
+
 
 @login_required
 def task_list(request):
@@ -43,7 +45,7 @@ def task_list(request):
         pass
     except Project.DoesNotExist:
         pass
-    
+
     tasks = None
     if project != None:
         tasks = user.tasks.filter(project=project)
@@ -51,26 +53,27 @@ def task_list(request):
         tasks = user.tasks.all()
     return render_to_response('main/task-list.xml', {'tasks': tasks})
 
+
 @login_required
 def task_status(request):
     '''
     Return the time on a task and the total time for today when given a task_id as a POST parameter.
     If the task_id isn't present or is not valid it will return 0:00 for the task-time'
     '''
-    
+
     user = request.user
     current_task = None
     task_time = '0:00'
     today_time = '0:00'
     today = date.today()
-    
+
     try:
         current_task = Task.objects.get(pk=request.POST['task'])
     except KeyError:
         pass
     except Task.DoesNotExist:
         pass
-        
+
     # Get time for the current task
     log_entries = LogEntry.objects.filter(staff=user, task=current_task,
                   logged_at__year=today.year, logged_at__month=today.month,
@@ -81,7 +84,7 @@ def task_status(request):
     task_hours = task_mins // 60
     task_mins = task_mins - (60 * task_hours)
     task_time = "%i:%#02i" % (task_hours, task_mins)
-    
+
     # Get the total time for today
     log_entries = LogEntry.objects.filter(staff=user,
                           logged_at__year=today.year, logged_at__month=today.month,
@@ -95,6 +98,7 @@ def task_status(request):
     return render_to_response('main/log-result.xml', {'current_task': current_task, 'task_time': task_time,
                                                        'today_time': today_time})
 
+
 @login_required
 def get_profile(request):
     "Get the user's profile if it exists"
@@ -103,5 +107,5 @@ def get_profile(request):
         profile = user.get_profile()
     except UserProfile.DoesNotExist:
         profile = None
-    
+
     return render_to_response('main/profile.xml', {'profile': profile})
