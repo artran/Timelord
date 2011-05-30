@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import *
-from main.models import *
+from timelord.main.models import *
 
 project_list_dict = {
     'queryset': Project.live_objects.all(),

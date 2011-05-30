@@ -1,8 +1,8 @@
 from django.conf.urls.defaults import *
-from main.models import *
+from models import *
 
 # Views for the HTML web interface
-urlpatterns = patterns('main.views',
+urlpatterns = patterns('timelord.main.views',
     (r'^$', 'index'),
     (r'^project/(?P<id>[0-9]+)/$', 'project'),
     (r'^status/$', 'status'),
@@ -11,7 +11,7 @@ urlpatterns = patterns('main.views',
 )
 
 # Views for the XML api
-urlpatterns += patterns('main.api_views',
+urlpatterns += patterns('timelord.main.api_views',
     (r'^project-list/$', 'project_list'),
     (r'^task-list/$', 'task_list'),
     (r'^task-status/$', 'task_status'),

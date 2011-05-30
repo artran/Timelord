@@ -46,7 +46,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.admin',
-    'main',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'timelord.main',
 )
 
-AUTH_PROFILE_MODULE = 'main.userprofile'
+AUTH_PROFILE_MODULE = 'timelord.main.userprofile'

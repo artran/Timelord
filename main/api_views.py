@@ -4,7 +4,7 @@ from django.http import Http404
 
 from datetime import date
 
-from main.models import *
+from models import *
 
 @login_required
 def project_list(request):

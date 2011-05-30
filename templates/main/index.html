@@ -5,7 +5,7 @@
   <script type="text/javascript">
     $(document).ready(function(){
       $('a#status').click(function(){
-        window.open('{% url main.views.status %}', 'timelord', 'height=200,width=300', false);
+        window.open('{% url timelord.main.views.status %}', 'timelord', 'height=200,width=300', false);
         return false; // Prevent the actual link from being followed
       });
     });
@@ -18,7 +18,7 @@
     <h2>Projects</h2>
     <ul>
         {% for project in projects %}
-            <li><a href="{% url main.views.project project.id %}">{{ project }}</a></li>
+            <li><a href="{% url timelord.main.views.project project.id %}">{{ project }}</a></li>
         {% endfor %}
     </ul>
     <a href="{% url main.views.status %}" id="status">Status</a>

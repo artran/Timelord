@@ -4,7 +4,7 @@ from django.http import Http404
 
 from datetime import date
 
-from main.models import *
+from timelord.main.models import *
 
 def index(request):
     projects = Project.objects.all()

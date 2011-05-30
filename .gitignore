@@ -1,0 +1,4 @@
+*.pyc
+*.tmproj
+*.db
+local_settings.py
