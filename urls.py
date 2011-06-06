@@ -27,6 +27,8 @@ urlpatterns += patterns('',
 
 # Static content
 if 'runserver' in sys.argv:
+    import os
+    dir = os.path.dirname(__file__)
     urlpatterns += patterns('',
-        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'media'}),
+        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': os.path.join(dir, 'media')}),
     )
