@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response, get_object_or_404
 from django.http import Http404
+from django.shortcuts import render_to_response, get_object_or_404
+from django.template import RequestContext
 
 from datetime import date
 
@@ -62,7 +63,7 @@ def status(request):
 
     tasks = user.tasks.order_by('project__name', 'name')
     return render_to_response('main/status.html', {'current_task': task, 'tasks': tasks, 'milestones': milestones,
-                                                   'today_time': today_time, 'task_time': task_time, 'user': user})
+                                                   'today_time': today_time, 'task_time': task_time, 'user': user}, context_instance=RequestContext(request))
 
 
 @login_required
