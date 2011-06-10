@@ -48,6 +48,7 @@ class Project(models.Model):
 class Task(models.Model):
     name = models.CharField(max_length=25)
     project = models.ForeignKey(Project, related_name='tasks')
+    info = models.TextField(blank=True)
     managers = models.ManyToManyField(User, related_name='managed_tasks')
     staff = models.ManyToManyField(User, related_name='tasks')
     # TODO: 'live' inferred from project
@@ -66,8 +67,8 @@ class LogEntry(models.Model):
     logged_at = models.DateTimeField(default=datetime.now)
     delta_time = models.IntegerField(help_text="Number of minutes being logged")
 
-    def __str__(self):
-        return "%s, %s: %s" % (self.task, self.staff, self.delta_time)
+    def __unicode__(self):
+        return "%s: %s, %s: %s" % (self.logged_at, self.task, self.staff, self.delta_time)
 
 
 class Note(models.Model):
