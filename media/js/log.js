@@ -32,8 +32,7 @@ $(document).ready(function(){
 // Keep track of the times on each task. Periodocally update the main server
 function log() {
     var idx = $("#task-select").val();
-    dataMap[csrfmiddlewaretoken] = csrfToken;
-    alert(dataMap[csrfmiddlewaretoken]);
+    dataMap['csrfmiddlewaretoken'] = csrfToken;
     
     var time = dataMap[idx];
     if (time == undefined) {
