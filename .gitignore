@@ -2,3 +2,4 @@
 *.tmproj
 *.db
 local_settings.py
+.idea
