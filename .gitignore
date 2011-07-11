@@ -3,3 +3,4 @@
 *.db
 local_settings.py
 .idea
+manage.py

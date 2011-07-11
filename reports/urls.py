@@ -18,3 +18,7 @@ urlpatterns = patterns('django.views.generic.list_detail',
     (r'^$', 'object_list', project_list_dict, 'timelord_project_list'),
     (r'^project/(?P<object_id>[0-9]+)/$', 'object_detail', project_detail_dict, 'timelord_project_detail'),
 )
+
+urlpatterns = patterns('timelord.reports.views',
+    (r'^summary-for-dates/(?P<start>[0-9]{8})/(?P<end>[0-9]{8})/$', 'summary_for_dates'),
+)

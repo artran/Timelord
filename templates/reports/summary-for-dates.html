@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <ul>
+        {% for entry in log_totals %}
+            <li>{{ entry.task__name }}: {{ entry.total_time }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
