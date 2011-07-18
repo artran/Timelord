@@ -2,7 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from datetime import datetime
+from datetime import datetime, date
 
 
 class LiveProjectManager(models.Manager):
@@ -65,6 +65,7 @@ class LogEntry(models.Model):
     task = models.ForeignKey(Task, related_name='log-entries')
     staff = models.ForeignKey(User, related_name='log-entries')
     logged_at = models.DateTimeField(default=datetime.now)
+    logged_on = models.DateField(default=date.today)
     delta_time = models.IntegerField(help_text="Number of minutes being logged")
 
     def __unicode__(self):
