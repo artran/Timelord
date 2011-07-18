@@ -64,7 +64,7 @@ class Task(models.Model):
 class LogEntry(models.Model):
     task = models.ForeignKey(Task, related_name='log-entries')
     staff = models.ForeignKey(User, related_name='log-entries')
-    logged_at = models.DateTimeField(default=datetime.now)
+    logged_at = models.DateTimeField(default=datetime.now, help_text='The time that the event was logged. The date should be taken from Logged_on.')
     logged_on = models.DateField(default=date.today)
     delta_time = models.IntegerField(help_text="Number of minutes being logged")
 
