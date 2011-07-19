@@ -76,8 +76,8 @@ def task_status(request):
 
     # Get time for the current task
     log_entries = LogEntry.objects.filter(staff=user, task=current_task,
-                  logged_at__year=today.year, logged_at__month=today.month,
-                  logged_at__day=today.day)
+                  logged_on__year=today.year, logged_on__month=today.month,
+                  logged_on__day=today.day)
     task_mins = 0
     for entry in log_entries:
         task_mins += entry.delta_time
@@ -87,8 +87,8 @@ def task_status(request):
 
     # Get the total time for today
     log_entries = LogEntry.objects.filter(staff=user,
-                          logged_at__year=today.year, logged_at__month=today.month,
-                          logged_at__day=today.day)
+                          logged_on__year=today.year, logged_on__month=today.month,
+                          logged_on__day=today.day)
     today_mins = 0
     for entry in log_entries:
         today_mins += entry.delta_time

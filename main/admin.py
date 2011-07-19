@@ -28,9 +28,9 @@ admin.site.register(Task, TaskAdmin)
 
 class LogEntryAdmin(admin.ModelAdmin):
     # save_on_top = True
-    # list_display = ('task', 'staff', 'delta_time', 'logged_at')
-    # list_filter = ('task', 'logged_at')
-    # ordering = ['-logged_at']
+    # list_display = ('task', 'staff', 'delta_time', 'logged_on')
+    # list_filter = ('task', 'logged_on')
+    # ordering = ['-logged_on']
     pass
 admin.site.register(LogEntry, LogEntryAdmin)
 

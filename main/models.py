@@ -74,7 +74,7 @@ class LogEntry(models.Model):
     invoiced = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return "%s: %s, %s: %s" % (self.logged_at, self.task, self.staff, self.delta_time)
+        return "%s %s: %s, %s: %s" % (self.logged_on, self.created_at, self.task, self.staff, self.delta_time)
 
 
 class Note(models.Model):

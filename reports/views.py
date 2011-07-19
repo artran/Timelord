@@ -20,7 +20,7 @@ def summary_for_dates(request, start, end):
     except ValueError, v:
         return HttpResponseServerError('Invalid date format')
 
-    log_totals = LogEntry.objects.filter(logged_at__range=(start_date, end_date)).values('task__name').annotate(total_time=Sum('delta_time'))
+    log_totals = LogEntry.objects.filter(logged_on__range=(start_date, end_date)).values('task__name').annotate(total_time=Sum('delta_time'))
     tasks = Task.objects.all()
 
     return render_to_response('reports/summary-for-dates.html', {'log_totals': log_totals, 'tasks': tasks})
