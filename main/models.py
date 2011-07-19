@@ -5,6 +5,10 @@ from django.contrib.auth.models import User
 from datetime import datetime, date
 
 
+def _current_time():
+    return datetime.now().time()
+
+
 class LiveProjectManager(models.Manager):
     """Return only projects that are live"""
     def get_query_set(self):
@@ -64,8 +68,8 @@ class Task(models.Model):
 class LogEntry(models.Model):
     task = models.ForeignKey(Task, related_name='log-entries')
     staff = models.ForeignKey(User, related_name='log-entries')
-    logged_at = models.DateTimeField(default=datetime.now, help_text='The time that the event was logged. The date should be taken from Logged_on.')
     logged_on = models.DateField(default=date.today)
+    created_at = models.TimeField(default=_current_time)
     delta_time = models.IntegerField(help_text="Number of minutes being logged")
     invoiced = models.BooleanField(default=False)
 
