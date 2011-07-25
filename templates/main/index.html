@@ -14,11 +14,14 @@
 
 {% block content %}
     <h1>Timelord</h1>
-    
+
     <h2>Projects</h2>
     <ul>
         {% for project in projects %}
-            <li><a href="{% url timelord.main.views.project project.id %}">{{ project }}</a></li>
+            <li>
+                <a href="{% url timelord.main.views.project project.id %}">{{ project }}</a>
+                :
+                <a href="{% url timelord.reports.views.invoice_project project_id=project.id %}">invoice</a></li>
         {% endfor %}
     </ul>
     <a href="{% url main.views.status %}" id="status">Status</a>

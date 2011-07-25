@@ -21,4 +21,5 @@ urlpatterns = patterns('django.views.generic.list_detail',
 
 urlpatterns = patterns('timelord.reports.views',
     (r'^summary-for-dates/(?P<start>[0-9]{8})/(?P<end>[0-9]{8})/$', 'summary_for_dates'),
+    (r'^invoice/(?P<project_id>\d*)/$', 'invoice_project'),
 )
