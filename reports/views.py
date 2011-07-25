@@ -26,7 +26,7 @@ def summary_for_dates(request, start, end):
     return render_to_response('reports/summary-for-dates.html', {'log_totals': log_totals, 'tasks': tasks})
 
 def invoice_project(request, project_id):
-    filtered = LogEntry.objects.filter(task__project=project_id, invoiced=False)
+    filtered = LogEntry.objects.filter(task__project=project_id, invoiced=False).order_by('logged_on')
     log_totals = filtered.values('task__name', 'logged_on').annotate(total_time=Sum('delta_time'))
     total_time = filtered.aggregate(time=Sum('delta_time'))
     return render_to_response('reports/invoice.html', {'log_totals': log_totals, 'total_time': total_time['time']})
